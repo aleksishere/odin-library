@@ -1,3 +1,3 @@
 # odin-library
 
-Simple library shelf made with JavaScipt!
+Simple library shelf made with JavaScript!
