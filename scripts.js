@@ -1,48 +1,50 @@
-let myLibrary = ['Stephen King,The Shining,700,Read',
-                'George Orwell,1984,255,Read'
-            ];
-
+let myLibrary = [];
 let bookList = document.getElementById('book-list');
+document.getElementById('addBook').addEventListener("click", addBookToLibrary);
 
-displayLibrary();
+// Book class
+class book {
+    constructor(author, title, pages, read, id) {
+        this.author = author;
+        this.title = title;
+        this.pages = pages;
+        this.read = read;
+        this.id = id;
+    }
 
-function book(author, title, pages, read, notes) {
-    this.author = author;
-    this.title = title;
-    this.pages = pages;
-    this.read = read;
-
-    this.addBook = function() {
-        let details = this.author.value + ',' + this.title.value + ',' + this.pages.value +',' + this.read.value;
-        myLibrary.push(details);
+    addBook(book) {
+        myLibrary.push(book);
+        book.setID(book);
         displayLibrary();
     }
+    setID(book) {
+        for (let index = 0; index < myLibrary.length; index++) {
+            book.id = index;
+        }
+    }
 }
+
+let book1 = new book("Stephen King","The Shining",666,"Read");
+book1.addBook(book1);
+displayLibrary();
 
 function addBookToLibrary() {
-    event.preventDefault();
-    let author = document.getElementById('author');
-    let title = document.getElementById('title');
-    let pages = document.getElementById('pages');
-    let read = document.getElementById('read');
-    if (read.checked == false) {
-        read.value = "Unread";
-    } else {
-        read.value = "Read";
-    }
-
-    if(author.value == '' || title.value == '' || pages.value == '' || read.value == '') {
+    let author = document.getElementById('author').value;
+    let title = document.getElementById('title').value;
+    let pages = document.getElementById('pages').value;
+    let read = document.getElementById('read').value;
+    if (document.getElementById('read').checked == false) {read = "Unread";} else {read = "Read";}
+    let books = new book(author, title, pages, read);
+    if(author == '' || title == '' || pages == '') {
         return false;
-    } else {
-        let book1 = new book(author, title, pages, read);
-        book1.addBook();
-    }
+    } else books.addBook(books);
 }
 
+// Function to create 'shelf' library
+
 function displayLibrary() {
-    bookList.textContent ='';
+    bookList.textContent = '';
     for (let index = 0; index < myLibrary.length; index++) {
-        let string = String(myLibrary[index]).split(',');
         let box = document.createElement('div');
         let title = document.createElement('p');
         let author = document.createElement('p');
@@ -52,12 +54,12 @@ function displayLibrary() {
         let deleteButton = document.createElement('button');
         let readButton = document.createElement('button');
         box.classList.add('book-item');
-        box.id ='book' + index;
+        box.id = index;
 
-        title.textContent = string[1];
-        author.textContent = string[0];
-        pages.textContent = string[2] + ' pages';
-        read.textContent = string[3];
+        title.textContent = myLibrary[index].title;
+        author.textContent = myLibrary[index].author;
+        pages.textContent = myLibrary[index].pages + ' pages';
+        read.textContent = myLibrary[index].read;
         read.classList.add("readstatus");
 
         readButton.textContent = "Change read status";
@@ -77,24 +79,23 @@ function displayLibrary() {
     }
 }
 
+// Checks array for id and then deletes div and array object.
 function deleteBook() {
-    let idDiv = this.parentNode.parentNode.id;
+    let idDiv = Number(this.parentNode.parentNode.id);
     let deletedDiv = document.getElementById(idDiv);
     deletedDiv.remove();
-    myLibrary.splice(idDiv.replace(/^\D+/g, ''),1);
+    myLibrary.splice(myLibrary.indexOf(myLibrary.find(item => item.id == idDiv)),1);
 }
 
+// Checks array for id and then changes read status.
 function changeReadStatus() {
-    let number = this.parentNode.parentNode.id.replace(/^\D+/g, '');
-    let arrayValues = myLibrary[number].split(',');
-    if (arrayValues[3] == 'Read') {
-        arrayValues[3] = 'Unread';
-        myLibrary[number] = arrayValues.join(",");
-        displayLibrary();
-    } else if (arrayValues[3] == 'Unread') {
-        arrayValues[3] = 'Read';
-        myLibrary[number] = arrayValues.join(",");
-        displayLibrary();
+    let idDiv = this.parentNode.parentNode.id;
+    if(myLibrary[myLibrary.indexOf(myLibrary.find(item => item.id == idDiv))].read == 'Read') {
+        myLibrary[myLibrary.indexOf(myLibrary.find(item => item.id == idDiv))].read = 'Unread';
+        displayLibrary()
+    } else {
+        myLibrary[myLibrary.indexOf(myLibrary.find(item => item.id == idDiv))].read = 'Read';
+        displayLibrary()
     }
 }
 

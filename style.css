@@ -11,6 +11,8 @@ body {
     padding-top: 20px;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    gap: 20px;
 }
 
 form {
@@ -25,7 +27,9 @@ form input {
     border-radius: 10px;
 }
 
-form button {
+a {
+    text-align: center;
+    border: 2px solid black;
     grid-column-start: 1;
     grid-column-end: 3;
     border-radius: 10px;
@@ -34,8 +38,9 @@ form button {
     background-color: #e9e3e1;
 }
 
-form button:hover {
+a:hover {
     background-color: #ddd7d4;
+    cursor: pointer;
 }
 
 #book-list {
